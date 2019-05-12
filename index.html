@@ -7,8 +7,9 @@
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <script type='text/javascript' preload src='Viet74K.json'></script>
   <script type="text/javascript">
-    // LOAD DOM elements
-    let text, input, messageDom;
+    // LOAD DOM elements + global
+    let text, input, btn, messageDom;
+    let checkWordExist = false;
     const startWord = ("b - c - d - đ - p - g - h - k - l - m - n - r - s - t - v - j - z - x - ch - tr - th - nh - kh - ph - ng - qu - gh - gi - ngh").split(' - ');
     // https://github.com/duyetdev/vietnamese-wordlist
     // https://j2team.github.io/tools/rhyme-finder/
@@ -16,7 +17,8 @@
       text = document.getElementsByClassName('text');
       input = document.getElementById('input');
       messageDom = document.getElementById('message');
-      document.getElementById('btn').onclick = () => findRhyme(input.value);
+      btn = document.getElementById('btn');
+      btn.onclick = () => findRhyme(input.value);
     }
     function resetText() {
       for (var i = 0; i < text.length; i++) {
@@ -38,24 +40,35 @@
     }
     function checkWord(word,usrInput) {
       let bool = false;
+      let index = 0;
+      for (let i = startWord.length-1; i >= 0; i--) {
+        let check = word.lastIndexOf(startWord[i]);
+        if (index < check) index = check;
+      }
+      // console.log(index)
+      word = word.substring(index, word.length);
       for (let i = startWord.length-1; i >= 0; i--) {
         if (word.startsWith(startWord[i])) {
+          let old = word;
           word = word.replace(startWord[i],'');
-          // console.log(word,usrInput);
+          // console.log(old,word,usrInput);
           if (word == usrInput) bool = true;
           break;
         }
       }
       return bool;
     }
+    // checkWord('kha','a');
     function processLargeArray(array,usrInput,maxLength,oldWord) {
       // set this to whatever number of items you can process at once
       let chunk = 100;
       let index = 0;
       let i = 0;
+      let max = array.length;
+      // max = 5000;
       function doChunk() {
         let cnt = chunk;
-        while (cnt-- && index < array.length && index < 999999) {
+        while (cnt-- && index < max) {
           //
           line = array[index];
           let data = '';
@@ -68,61 +81,79 @@
           let bool = true;
           bool = checkWord(data[data.length - 1],usrInput);
           if (data[data.length - 1].endsWith(usrInput) && bool && data.length <= maxLength) {
-            // checkWord(data[data.length - 1],usrInput);
+            // bool = checkWord(data[data.length - 1],usrInput);
             text[data.length-1].parentNode.style.display = 'block';
             text[data.length-1].innerHTML += (line == oldWord) ? (`<span style='color: red; font-weight: bolder;'> ${line} </span>`) : (`<span> ${line} </span>`);
-            i+=1;
+            checkWordExist = true;
           }
           //
           index++;
         }
-        if (index < array.length ) {
+        if (index < max ) {
           // set Timeout for async iteration
-          setTimeout(doChunk, 5);
+          setTimeout(doChunk, 1);
         } else {
-          return i;
+          // console.log('done')
+          btn.disabled = false;
+          console.timeEnd('Loop time')
+          test = document.querySelectorAll('span').length;
+          console.log(test);
+          if (!checkWordExist) {
+            message("Cannot find any rhymes!");
+          } else {
+            message('Search done!');
+          }
         }
       }
       doChunk();
-
     }
     function findRhyme(usrInput) {
+      message('');
       // Check user Input
-      if (usrInput.split(' ').length !== 1 || usrInput == '') return message('Write a word only!');
-
+      let checkInput = usrInput.split(' ');
+      if ((checkInput.length !== 1 && checkInput[checkInput.length - 1] !== '') || usrInput == '') return message('Write a word only!');
+      if (checkInput[checkInput.length - 1] == '') {
+        checkInput.pop();
+        usrInput = checkInput.join(' ');
+      }
+      console.log(`%cGiven input: ${usrInput}`,'color: #ff7f82;')
       // Reset the text, so new one can be written
       resetText();
 
       // Write rhyme texts
-      let i = 0;
+      checkWordExist = false;
       let maxLength = 9
       let oldWord = usrInput;
       if (usrInput.length == 1) {
         return message('Word max 2 characters!');
       } else {
         // cut input start, find ending
+        btn.disabled = true;
         usrInput = cutWord(usrInput);
       }
-      console.log(usrInput);
-      console.time();
+      console.log(`%cSearching for words with ending: ${usrInput}`,'color: #ff7f82;')
+      console.time('Loop time');
       // for (let j = 0, len = dict.length; j < len; j++) {
       //   line = dict[j];
-      // // for (let line of dict) {
       //   let data = '';
       //   if (line.split('-').length == 1) {
       //     data = line.split(' ');
       //   } else {
       //     data = line.split('-');
       //   }
-      //   if (data[data.length - 1].endsWith(usrInput) && data.length <= maxLength) {
+      //   // console.log(data[data.length - 1]);
+      //   let bool = true;
+      //   bool = checkWord(data[data.length - 1],usrInput);
+      //   if (data[data.length - 1].endsWith(usrInput) && bool && data.length <= maxLength) {
+      //     // checkWord(data[data.length - 1],usrInput);
       //     text[data.length-1].parentNode.style.display = 'block';
       //     text[data.length-1].innerHTML += (line == oldWord) ? (`<span style='color: red; font-weight: bolder;'> ${line} </span>`) : (`<span> ${line} </span>`);
       //     i+=1;
       //   }
       // }
-      i = processLargeArray(dict,usrInput,maxLength, oldWord);
-      console.timeEnd();
-      if (i === 0) message("Cannot find any rhymes!");
+      processLargeArray(dict,usrInput,maxLength,oldWord);
+      // console.timeEnd();
+      // if (i === 0) message("Cannot find any rhymes!");
     }
   </script>
 </head>
