@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Vietnamese Rhyme Finder by Shirajuki</title>
+  <meta charset="utf-8" />
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <script type='text/javascript' preload src='Viet74K.json'></script>
+  <script type="text/javascript">
+    // LOAD DOM elements
+    let text, input, messageDom;
+    const startWord = ("b - c - d - đ - p - g - h - k - l - m - n - r - s - t - v - j - z - x - ch - tr - th - nh - kh - ph - ng - qu - gh - gi - ngh").split(' - ');
+    // https://github.com/duyetdev/vietnamese-wordlist
+    // https://j2team.github.io/tools/rhyme-finder/
+    window.onload = () => {
+      text = document.getElementsByClassName('text');
+      input = document.getElementById('input');
+      messageDom = document.getElementById('message');
+      document.getElementById('btn').onclick = () => findRhyme(input.value);
+    }
+    function resetText() {
+      for (var i = 0; i < text.length; i++) {
+        text[i].innerHTML = '';
+        text[i].parentNode.style.display = 'none';
+      }
+    }
+    function message(msg) {
+      messageDom.innerHTML = msg;
+    }
+    function cutWord(word) {
+      for (let i = startWord.length-1; i >= 0; i--) {
+        if (word.startsWith(startWord[i])) {
+          word = word.replace(startWord[i],'');
+          break;
+        }
+      }
+      return word;
+    }
+    function findRhyme(usrInput) {
+      // Check user Input
+      if (usrInput.split(' ').length !== 1 || usrInput == '') return message('Write a word only!');
+
+      // Reset the text, so new one can be written
+      resetText();
+
+      // Write rhyme texts
+      let i = 0;
+      let maxLength = 9
+      let oldWord = usrInput;
+      if (usrInput.length == 1) {
+        return message('Word max 2 characters!');
+      } else {
+        // cut input start, find ending
+        usrInput = cutWord(usrInput);
+      }
+      console.log(usrInput);
+      for (let line of dict) {
+        let data = '';
+        if (line.split('-').length == 1) {
+          data = line.split(' ');
+        } else {
+          data = line.split('-');
+        }
+        if (data[data.length - 1].endsWith(usrInput) && data.length <= maxLength) {
+          text[data.length-1].parentNode.style.display = 'block';
+          text[data.length-1].innerHTML += (line == oldWord) ? (`<span style='color: red; font-weight: bolder;'> ${line} </span>`) : (`<span> ${line} </span>`);
+          if (line !== oldWord)
+          i+=1
+        }
+      }
+      if (i === 0) message("Cannot find any rhymes!");
+    }
+  </script>
+</head>
+
+<body>
+  <header>
+    <p>Vietnamese Rhyme Finder by Shirajuki</p>
+  </header>
+  <main id="main">
+    <div class='inputs'>
+      <input type="text" id="input" placeholder='Tìm kiếm những chữ có vần' value="">
+      <button id="btn">Tìm</button>
+      <p id='message'></p>
+    </div>
+    <br>
+    <div class="content">
+			<h2>chữ 1</h2>
+      <p class='text'></p>
+		</div>
+		<div class="content">
+			<h2>chữ 2</h2>
+      <p class='text'></p>
+		</div>
+		<div class="content">
+			<h2>chữ 3</h2>
+      <p class='text'></p>
+		</div>
+    <div class="content">
+			<h2>chữ 4</h2>
+      <p class='text'></p>
+		</div>
+    <div class="content">
+			<h2>chữ 5</h2>
+      <p class='text'></p>
+		</div>
+    <div class="content">
+			<h2>chữ 6</h2>
+      <p class='text'></p>
+		</div>
+    <div class="content">
+			<h2>chữ 7</h2>
+      <p class='text'></p>
+		</div>
+    <div class="content">
+			<h2>chữ 8</h2>
+      <p class='text'></p>
+		</div>
+    <div class="content">
+			<h2>chữ 9</h2>
+      <p class='text'></p>
+		</div>
+  </main>
+  <br/>
+</body>
+
+</html>
