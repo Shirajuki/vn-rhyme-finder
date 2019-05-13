@@ -31,23 +31,29 @@
       messageDom.innerHTML = msg;
     }
     function cutWord(word) {
+      // for (let i = startWord.length-1; i >= 0; i--) {
+      //   if (word.startsWith(startWord[i])) {
+      //     word = word.replace(startWord[i],'');
+      //     break;
+      //   }
+      // }
+      let index = -1;
       for (let i = startWord.length-1; i >= 0; i--) {
-        if (word.startsWith(startWord[i])) {
-          word = word.replace(startWord[i],'');
-          break;
-        }
+        let check = word.lastIndexOf(startWord[i]);
+        if (index < check && check !== word.length-1) index = check;
       }
+      // console.log(word.length,index)
+      if (index !== -1) word = word.substring(index+1, word.length);
       return word;
     }
     function checkWord(word,usrInput) {
       let bool = false;
-      let index = 0;
+      let index = -1;
       for (let i = startWord.length-1; i >= 0; i--) {
         let check = word.lastIndexOf(startWord[i]);
-        if (index < check) index = check;
+        if (index < check && check !== word.length-1) index = check;
       }
-      // console.log(index)
-      word = word.substring(index, word.length);
+      if (index !== -1) word = word.substring(index, word.length);
       for (let i = startWord.length-1; i >= 0; i--) {
         if (word.startsWith(startWord[i])) {
           let old = word;
@@ -59,7 +65,7 @@
       }
       return bool;
     }
-    // checkWord('kha','a');
+    checkWord('bazooka','a');
     function processLargeArray(array,usrInput,maxLength,oldWord) {
       // set this to whatever number of items you can process at once
       let chunk = 100;
@@ -80,7 +86,7 @@
           }
           // console.log(data[data.length - 1]);
           let bool = true;
-          if (usrInput == 2) bool = checkWord(data[data.length - 1],usrInput);
+          if (usrInput.length <= 2) bool = checkWord(data[data.length - 1],usrInput);
           if (data[data.length - 1].endsWith(usrInput) && bool && data.length <= maxLength) {
             // bool = checkWord(data[data.length - 1],usrInput);
             text[data.length-1].parentNode.style.display = 'block';
