@@ -79,7 +79,7 @@
           }
           // console.log(data[data.length - 1]);
           let bool = true;
-          bool = checkWord(data[data.length - 1],usrInput);
+          if (usrInput == 2) bool = checkWord(data[data.length - 1],usrInput);
           if (data[data.length - 1].endsWith(usrInput) && bool && data.length <= maxLength) {
             // bool = checkWord(data[data.length - 1],usrInput);
             text[data.length-1].parentNode.style.display = 'block';
