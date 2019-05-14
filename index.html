@@ -65,10 +65,10 @@
       }
       return bool;
     }
-    checkWord('bazooka','a');
+    // checkWord('bazooka','a');
     function processLargeArray(array,usrInput,maxLength,oldWord) {
       // set this to whatever number of items you can process at once
-      let chunk = 100;
+      let chunk = 1000;
       let index = 0;
       let i = 0;
       let max = array.length;
@@ -102,9 +102,9 @@
         } else {
           // console.log('done')
           btn.disabled = false;
+          let totalWord = document.querySelectorAll('span').length;
+          console.log(`%cWords found: ${totalWord}`,'color: #ff7f82;')
           console.timeEnd('Loop time')
-          test = document.querySelectorAll('span').length;
-          console.log(test);
           if (!checkWordExist) {
             message("Cannot find any rhymes!");
           } else {
@@ -117,6 +117,7 @@
     function findRhyme(usrInput) {
       message('');
       // Check user Input
+      usrInput = usrInput.trim();
       let checkInput = usrInput.split(' ');
       if ((checkInput.length !== 1 && checkInput[checkInput.length - 1] !== '') || usrInput == '') return message('Write a word only!');
       if (checkInput[checkInput.length - 1] == '') {
@@ -129,6 +130,7 @@
 
       // Write rhyme texts
       checkWordExist = false;
+      usrInput = usrInput.toLowerCase();
       let maxLength = 9
       let oldWord = usrInput;
       if (usrInput.length == 1) {
