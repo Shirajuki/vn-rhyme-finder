@@ -12,7 +12,7 @@
     let text, input, btn, messageDom;
     dict = Array.from(new Set(dict));
     let checkWordExist = false;
-    const startWord = ("b - c - d - đ - p - g - h - k - l - m - n - r - s - t - v - j - z - x - ch - tr - th - nh - kh - ph - ng - qu - gh - gi - ngh").split(' - ');
+    const startWord = ("b - c - d - đ - p - g - h - k - l - m - n - r - s - t - v - j - z - x - nh - ng - ch - th - tr - kh - ph - qu - gh - gi - ngh").split(' - ');
     // https://github.com/duyetdev/vietnamese-wordlist
     // https://j2team.github.io/tools/rhyme-finder/
     window.onload = () => {
@@ -39,12 +39,23 @@
       //   }
       // }
       let index = -1;
+      let setIndex = [];
       for (let i = startWord.length-1; i >= 0; i--) {
         let check = word.lastIndexOf(startWord[i]);
-        if (index < check && check !== word.length-1) index = check;
+        if (check !== word.length-1) index = check;
+        // console.log(word, startWord[i], index);
+        if (index !== -1) setIndex.push({w: startWord[i], i1: index, i2: i});
       }
-      // console.log(word.length,index)
-      if (index !== -1) word = word.substring(index+1, word.length);
+      index = setIndex.map(x => x.i1).indexOf(Math.min(...setIndex.map(x => x.i1)))
+      // console.log(setIndex,index);
+      let indexWord = setIndex.map(x => x.i2)[index];
+      indexWord = startWord[indexWord];
+      // console.log(word.length,index,indexWord);
+      if (index !== -1) {
+        word = word.substring(indexWord.length, word.length)
+        // word = word.substring(index+1, word.length);
+      }
+      console.log(word);
       return word;
     }
     function checkWord(word,usrInput) {
@@ -180,43 +191,42 @@
     </div>
     <br>
     <div class="content">
-			<h2>chữ 1</h2>
+			<h2>1 chữ</h2>
       <p class='text'></p>
 		</div>
 		<div class="content">
-			<h2>chữ 2</h2>
+			<h2>2 chữ</h2>
       <p class='text'></p>
 		</div>
 		<div class="content">
-			<h2>chữ 3</h2>
+			<h2>3 chữ</h2>
       <p class='text'></p>
 		</div>
     <div class="content">
-			<h2>chữ 4</h2>
+			<h2>4 chữ</h2>
       <p class='text'></p>
 		</div>
     <div class="content">
-			<h2>chữ 5</h2>
+			<h2>5 chữ</h2>
       <p class='text'></p>
 		</div>
     <div class="content">
-			<h2>chữ 6</h2>
+			<h2>6 chữ</h2>
       <p class='text'></p>
 		</div>
     <div class="content">
-			<h2>chữ 7</h2>
+			<h2>7 chữ</h2>
       <p class='text'></p>
 		</div>
     <div class="content">
-			<h2>chữ 8</h2>
+			<h2>8 chữ</h2>
       <p class='text'></p>
 		</div>
     <div class="content">
-			<h2>chữ 9</h2>
+			<h2>9 chữ</h2>
       <p class='text'></p>
 		</div>
   </main>
   <br/>
 </body>
-
 </html>
