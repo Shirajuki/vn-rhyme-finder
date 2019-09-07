@@ -6,6 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link href="css/style.css" rel="stylesheet" type="text/css">
+  <link rel="manifest" href="manifest.json">
   <script type='text/javascript' preload src='Viet74K.json'></script>
   <script type="text/javascript">
     // LOAD DOM elements + global
@@ -21,6 +22,7 @@
       messageDom = document.getElementById('message');
       btn = document.getElementById('btn');
       btn.onclick = () => findRhyme(input.value);
+      if ('serviceWorker' in navigator) { // register service worker navigator.serviceWorker.register('/service-worker.js'); }
     }
     function resetText() {
       for (var i = 0; i < text.length; i++) {
