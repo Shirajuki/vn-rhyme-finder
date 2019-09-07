@@ -16,13 +16,16 @@
     const startWord = ("b - c - d - đ - p - g - h - k - l - m - n - r - s - t - v - j - z - x - nh - ng - ch - th - tr - kh - ph - qu - gh - gi - ngh").split(' - ');
     // https://github.com/duyetdev/vietnamese-wordlist
     // https://j2team.github.io/tools/rhyme-finder/
+    if ('serviceWorker' in navigator) {
+      // register service worker
+      navigator.serviceWorker.register('service-worker.js');
+    }
     window.onload = () => {
       text = document.getElementsByClassName('text');
       input = document.getElementById('input');
       messageDom = document.getElementById('message');
       btn = document.getElementById('btn');
       btn.onclick = () => findRhyme(input.value);
-      if ('serviceWorker' in navigator) { // register service worker navigator.serviceWorker.register('/service-worker.js'); }
     }
     function resetText() {
       for (var i = 0; i < text.length; i++) {
