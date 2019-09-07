@@ -11,6 +11,9 @@ html {
     width: 80% !important;
   }
 }
+html {
+  background-color: rgba(220, 255, 225, 0.6);
+}
 body {
   margin: 0;
   padding: 0;
@@ -88,7 +91,7 @@ main {
   align-items: flex-start;
   justify-content: center;
   margin: 0 auto;
-  min-height: 90vh;
+  min-height: 100vh;
 }
 .content {
   display: none;
