@@ -18,7 +18,7 @@ body {
   text-align: center;
 
 	background: linear-gradient(to top, rgba(255, 127, 130,0.9), rgba(220, 255, 225, 0.6));
-	min-height: 500px;
+	min-height: 600px;
 	background-attachment: fixed;
 	background-position: center;
 	background-repeat: no-repeat;
