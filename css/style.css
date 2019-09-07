@@ -21,7 +21,7 @@ body {
   text-align: center;
 
 	background: linear-gradient(to top, rgba(255, 127, 130,0.9), rgba(220, 255, 225, 0.6));
-	min-height: 600px;
+	min-height: 100vh;
   /* height: 100vh; */
 	background-attachment: fixed;
 	background-position: center;
@@ -91,7 +91,7 @@ main {
   align-items: flex-start;
   justify-content: center;
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: 100%;
 }
 .content {
   display: none;
